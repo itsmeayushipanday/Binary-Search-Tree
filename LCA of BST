@@ -1,0 +1,44 @@
+////////////////RECURSIVE METHOD///////////////////
+tc, sc-o(h)
+worst me height n and avg me logn
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root) return NULL;
+        if(root->val == p->val || root->val == q->val) return root;
+        if(root->val > p->val && root->val > q->val){
+            return lowestCommonAncestor(root->left, p, q); //left side
+        }
+        if(root->val < p->val && root->val < q->val) {
+            return lowestCommonAncestor(root->right, p, q); //right side
+        }
+        return root;
+    }
+};
+
+///////ITERATIVE METHOD///////////////
+tc-o(h) sc-o(1)
+class Solution
+{
+    public:
+        TreeNode* lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+        {
+            if (!root) return NULL;
+            while (root)
+            {
+                if (root->val == p->val || root->val == q->val) return root;
+                if (root->val > p->val && root->val > q->val)
+                {
+                    root = root->left;
+                }
+                else if (root->val < p->val && root->val < q->val)
+                {
+                    root = root->right;
+                }
+                else {
+                    return root;
+                }
+            }
+            return NULL;
+        }
+};
