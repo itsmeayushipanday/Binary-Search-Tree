@@ -1,0 +1,18 @@
+TC-O(n), sc-o(h) worst me o(n) avg me o(logn)
+class Solution {
+public:
+    bool fn(TreeNode* root, long long mini, long long maxi){
+        if(root == NULL) return true;
+        if(root->val >= maxi || root->val <= mini) return false; //if given root does not lie in ranges
+
+        bool left = fn(root->left, mini, root->val); //on going left, min value remains min but max get's 
+        //limited to root->val
+        bool right = fn(root->right, root->val, maxi); //here, max remains max but min limited to root value
+
+        return left && right;
+    }
+    bool isValidBST(TreeNode* root) {
+        //need to maintain range for very node's min value and max value
+        return fn(root, LONG_MIN, LONG_MAX);
+    }
+};
