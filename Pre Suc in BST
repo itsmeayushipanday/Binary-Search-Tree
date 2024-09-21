@@ -1,0 +1,44 @@
+tc-o(h) avg me logn and worst me o(n)
+sc-o(1) worst me o(h) jayegi
+class Solution
+{
+    public:
+    void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+    {
+        if(!root) return;
+        if(key == root->key){
+            //left part??
+            if(root->left != NULL){
+                Node* temp = root->left;
+                //go to the right most of left sub tree
+                while(temp->right){
+                    temp = temp->right;
+                }
+                pre = temp;
+            }
+            //right part??
+            if(root->right != NULL){
+                Node* temp = root->right;
+                //go to left most of right sub tree
+                while(temp->left){
+                    temp = temp->left;
+                }
+                suc = temp;
+            }
+            return;
+        }
+        if(key > root->key){
+            //10>8 so pre toh root hi ho jayega
+            //suc right me dekho joh root se bda ho
+            pre = root;
+            findPreSuc(root->right, pre, suc, key);
+        }
+        else{
+            //key < root->key
+            //8 < 10
+            //suc root hoga or 8 se chota left me dekho woh uska pre hoga
+            suc = root;
+            findPreSuc(root->left, pre, suc, key);
+        }
+    }
+};
