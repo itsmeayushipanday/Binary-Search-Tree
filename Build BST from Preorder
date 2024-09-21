@@ -1,0 +1,20 @@
+Time Complexity: o(n)
+sc- o(h) O(logn)).
+class Solution {
+public:
+    TreeNode* fn(vector<int>& preorder, int& idx, long long maxi){
+        if(idx == preorder.size() || preorder[idx] > maxi) return NULL;
+
+        TreeNode* root = new TreeNode(preorder[idx]);
+        idx++;
+
+        root->left = fn(preorder, idx, root->val);
+        root->right = fn(preorder, idx, maxi);
+
+        return root;
+    }
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int idx = 0;
+        return fn(preorder, idx, INT_MAX);
+    }
+};
