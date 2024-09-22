@@ -1,0 +1,20 @@
+tc-pushing and poping takes logk time and total n nodes
+tc-o(nlogk)
+sc-pq space for k elements, recursive takes logn for avg and o(n) for worst case
+class Solution {
+public:
+    void fn(TreeNode* node, priority_queue<int> &pq, int k){
+        if(!node) return;
+        pq.push(node->val);
+        while(pq.size() > k){
+            pq.pop();
+        }
+        fn(node->left, pq, k);
+        fn(node->right, pq, k);
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        priority_queue<int> pq;
+        fn(root, pq, k);
+        return pq.top();
+    }
+};
