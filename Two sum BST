@@ -1,0 +1,72 @@
+constructor takes o(h), next-o(1), main fn-o(n)
+sc-o(h)
+class BSTIterator {
+private:
+    void pushAll(TreeNode* node){
+        if(node == NULL) return;
+        while(node){
+            st.push(node);
+            if(!reverse){
+                //inorder
+                node = node->left;
+            }
+            else{
+                //rev of inorder
+                node = node->right;
+            }
+        }
+    }
+public:
+    stack<TreeNode*> st;
+    bool reverse;
+    //reverse == false means inorder hain.. smallest to largest
+    //reverse == true means reverse of inorder.. largest to smallest
+
+    BSTIterator(TreeNode* root, bool isRev){
+        reverse = isRev;
+        pushAll(root);
+    }
+
+    bool hasNext(){
+        return !st.empty();
+    }
+
+    int next(){
+        TreeNode* tempNode = st.top();
+        st.pop();
+        if(!reverse){
+            //means false means inorder so
+            pushAll(tempNode->right);
+        }
+        else{
+            //true so  rev of inorder
+            pushAll(tempNode->left);
+        }
+        return tempNode->val;
+    }
+};
+
+class Solution {
+public:
+    bool findTarget(TreeNode* root, int k) {
+        if(!root) return false;
+
+        BSTIterator l(root, false); //inorder --> ascending order
+        BSTIterator r(root, true); //rev of inorder --> desc order
+
+        int i = l.next();
+        int j = r.next();
+
+        while(i < j){
+            int sum = i+j;
+            if(sum == k) return true;
+            else if(sum < k){
+                i = l.next();
+            }
+            else{
+                j = r.next();
+            }
+        }
+        return false;
+    }
+};
