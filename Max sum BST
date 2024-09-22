@@ -1,0 +1,48 @@
+Time Complexity: 𝑂(𝑁)
+Space Complexity: 
+O(N) in the worst case; 
+O(logN) in the average case for a balanced tree.
+
+
+class TreeInfo{
+public:
+    int minNode, maxNode, maxSum;
+    bool isBST;
+
+    TreeInfo(int minNode, int maxNode, int maxSum, bool isBST){
+        this->minNode = minNode;
+        this->maxNode = maxNode;
+        this->maxSum = maxSum;
+        this->isBST = isBST;
+    }
+};
+class Solution {
+private:
+    int maxSum = 0;
+
+    TreeInfo fn(TreeNode* root){
+        if(!root) {
+            return TreeInfo(INT_MAX, INT_MIN, 0, true);
+        }
+        auto leftInfo = fn(root->left);
+        auto rightInfo = fn(root->right);
+
+        if(leftInfo.isBST && rightInfo.isBST && root->val > leftInfo.maxNode &&  root->val < rightInfo.minNode){
+            int currSum = leftInfo.maxSum + rightInfo.maxSum + root->val;
+            maxSum = max(maxSum, currSum);
+
+            return TreeInfo(
+                min(root->val, leftInfo.minNode),
+                max(root->val, rightInfo.maxNode),
+                currSum,
+                true
+            );
+        }
+        return TreeInfo(INT_MIN, INT_MAX, max(leftInfo.maxSum, rightInfo.maxSum), false);
+    }
+public:
+    int maxSumBST(TreeNode* root) {
+        fn(root);
+        return maxSum;
+    }
+};
