@@ -1,5 +1,9 @@
 tc-next, hasNext-o(1) and pushAll- height of tree- o(h)
 sc-o(h)
+step1- init push all the left nodes of the BST
+in next operation- pop the top most element which is your next element
+now left done, node done, now push the right node in st
+in hasNext, if st.empty then nothing left so false, else true
 class BSTIterator {
 private:
     stack<TreeNode*> st;
