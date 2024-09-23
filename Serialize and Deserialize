@@ -1,0 +1,69 @@
+tc-o(n), sc-o(n)
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string s;
+        if(!root) return s;
+        queue<TreeNode*> q;
+        q.push(root); //1
+
+        while(!q.empty()){
+            TreeNode* curr = q.front();//1
+            q.pop();
+
+            if(curr == NULL) s.append("#,");
+            else{
+                //curr is not null
+                s.append(to_string(curr->val) + ','); // s = 1, 
+                q.push(curr->left); //2
+                q.push(curr->right); //3
+            }
+        }
+        return s;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if(data.size() == 0) return NULL; 
+        stringstream s(data); // s = 1,2,3,#,#,4,5,#,#,#,#
+        string str;
+        getline(s, str, ',');//iter on s individually--> str = first 1 then 2 then 3 like that
+        TreeNode* root = new TreeNode(stoi(str)); // root = 1
+        queue<TreeNode*> q;
+        q.push(root);//1
+
+        while(!q.empty()){
+            TreeNode* node = q.front();//1
+            q.pop();
+
+            //for left node
+            getline(s, str, ','); // gives 2
+            if(str == "#"){
+                node->left = NULL;
+            }
+            else{
+                TreeNode* nodeLeft = new TreeNode(stoi(str));
+                node->left = nodeLeft;
+                q.push(nodeLeft);
+            }
+
+            //for right node
+            getline(s, str, ','); // gives 3
+            if(str == "#"){
+                node->right = NULL;
+            }
+            else{
+                TreeNode* nodeRight = new TreeNode(stoi(str));
+                node->right = nodeRight;
+                q.push(nodeRight);
+            }
+        }
+        return root;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
