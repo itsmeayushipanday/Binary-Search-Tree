@@ -1,0 +1,58 @@
+addNum-tc-o(logn)
+median tc-o(1)
+sc-o(n)
+class MedianFinder {
+public:
+    priority_queue<int> maxPq;
+    priority_queue<int, vector<int>, greater<int>> minPq;
+    MedianFinder() {
+        //ADDING
+        //max heap is empty init so push
+        //if num < maxheap.top so push in max heap
+        //if num > maxheap.top so push in min heap
+        //if max heap size - min heap size diff is > 1 then max heap ka top ele
+        //pop and pushed in min heap
+        //vice verca for min heap size - max heap size diff > 1
+
+        //FIND MEDIAN
+        //if both heaps size is equal then avg of thier top
+        //if one size > than other than return top ele of larger size heap
+        
+    }
+    
+    void addNum(int num) {
+        if(maxPq.size() == 0 || num < maxPq.top()){
+            maxPq.push(num);
+        }
+        else{
+            minPq.push(num);
+        }
+        if(maxPq.size() > minPq.size() + 1){
+            int ele = maxPq.top();
+            maxPq.pop();
+            minPq.push(ele);
+        }
+        else if(minPq.size() > maxPq.size() + 1){
+            int ele = minPq.top();
+            minPq.pop();
+            maxPq.push(ele);
+        }
+    }
+    
+    double findMedian() {
+        if(maxPq.size() == minPq.size()){
+            return (maxPq.top() + minPq.top())/double(2);
+        }
+        else if(maxPq.size() > minPq.size()){
+            return maxPq.top();
+        }
+        else return minPq.top();
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
