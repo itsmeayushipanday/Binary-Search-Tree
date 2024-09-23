@@ -1,0 +1,32 @@
+       1
+     /   \
+    2     5
+   / \     \
+  3   4     6
+tc-o(n), sc-o(height of tree), logn avg case, n worst case
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(!root) return;
+
+        flatten(root->left); //go to left
+        flatten(root->right); //go to right
+        //return to node 2 in fig1 in first iter 
+        if(root->left != NULL){
+            TreeNode* tempRight = NULL;
+            if(root->right){
+                tempRight = root->right; //4
+            }
+            root->right = root->left;//2-->right == 3
+            root->left = NULL; //2->left == NULL
+
+            TreeNode* tailRight = root->right; //tailRight = 3
+
+            while(tailRight->right != NULL){
+                tailRight = tailRight->right; //go to last node of root's right part
+            }
+
+            tailRight->right = tempRight; //and join this last node to tempRight 3-->right == 4
+        }
+    }
+};
